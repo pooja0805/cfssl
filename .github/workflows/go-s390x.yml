@@ -1,0 +1,36 @@
+name: Go
+
+on:
+  push:
+    branches: [s390x-demo]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ["1.18", "1.19"]
+        
+   steps:
+      - uses: actions/checkout@v2
+      - name: Build CFSSL & Run test
+        uses: uraimo/run-on-arch-action@v2.2.0
+        with:
+          arch: s390x
+          distro: ${{matrix.go}}
+          run: |
+            sudo apt-get update && sudo apt-get install -y wget tar sudo
+            if [[ ${{matrix.go}} == 1.18 ]]; then
+                export GO_VERSION=1.18.8
+            else
+                export GO_VERSION=1.19.2
+            fi
+            wget https://go.dev/dl/go${GO_VERSION}.linux-s390x.tar.gz
+            sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-s390x.tar.gz
+            export PATH=$PATH:/usr/local/go/bin
+            go version
+            go build -v ./...
+            make bin/goose;
+            ./test.sh
