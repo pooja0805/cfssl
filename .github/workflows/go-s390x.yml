@@ -10,6 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         go: ["1.18", "1.19"]
         
@@ -21,7 +22,7 @@ jobs:
           arch: s390x
           distro: ubuntu_latest
           run: |
-            apt-get update && sudo apt-get install -y wget tar sudo
+            apt-get update && apt-get install -y wget tar sudo
             if [[ ${{matrix.go}} == 1.18 ]]; then
                 export GO_VERSION=1.18.8
             else
@@ -32,5 +33,4 @@ jobs:
             export PATH=$PATH:/usr/local/go/bin
             go version
             go build -v ./...
-            make bin/goose;
             ./test.sh
