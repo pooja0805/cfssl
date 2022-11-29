@@ -13,7 +13,7 @@ jobs:
       matrix:
         go: ["1.18", "1.19"]
         
-   steps:
+    steps:
       - uses: actions/checkout@v2
       - name: Build CFSSL & Run test
         uses: uraimo/run-on-arch-action@v2.2.0
