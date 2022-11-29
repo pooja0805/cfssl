@@ -32,5 +32,7 @@ jobs:
             sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-s390x.tar.gz
             export PATH=$PATH:/usr/local/go/bin
             go version
+            export GOFLAGS="-mod=vendor"
+            export GODEBUG="x509sha1=1"
             go build -v ./...
             ./test.sh
