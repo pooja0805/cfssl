@@ -22,7 +22,7 @@ jobs:
           arch: s390x
           distro: ubuntu_latest
           run: |
-            apt-get update && apt-get install -y wget tar sudo
+            apt-get update && apt-get install -y wget tar sudo make gcc-s390x-linux-gnu
             if [[ ${{matrix.go}} == 1.18 ]]; then
                 export GO_VERSION=1.18.8
             else
